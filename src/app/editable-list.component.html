@@ -1,0 +1,119 @@
+      <!-- Grid Properties -->
+      <kendo-grid id="grid"
+                  [data]="data"
+                  [resizable]="true"
+                  [reorderable]="true"
+                  [selectable]="{
+      checkboxOnly: true,
+      enabled: true,
+      mode: 'multiple'
+    }"
+                  [kendoGridSelectBy]="'id'"
+                  [selectedKeys]="gridSelectedData"
+                  [sortable]="{
+          allowUnsort: true,
+          mode: 'multiple'
+        }"
+                  [sort]="gridSort"
+                  pageSize="5"
+                  skip="0"
+                  [filterable]="false"
+                  [rowClass]="rowCallback"
+                  [groupable]="false"
+                  [navigable]="true"
+                  [pageable]="{
+        buttonCount: 3,
+        info: true,
+        type: 'input',
+        pageSizes: [5, 10, 20, 50, 100],
+        previousNext: true
+    }"
+                  (dataStateChange)="dataStateChange($event)"
+                  (columnReorder)="columnReorder($event)"
+                  [scrollable]="'scrollable'"
+                  (cellClick)="cellClickHandler($event)"
+                  (cancel)="inlineEditCancelHandler()"
+                  (save)="inlineEditSaveHandler($event)">
+
+        <ng-container>
+
+          <!-- Grid Checkbox Column Properties -->
+          <kendo-grid-checkbox-column [class]="['dc-editable-list-grid-checkcolumn']"
+                                      [footerClass]="['dc-editable-list-grid-checkcolumn']"
+                                      [headerClass]="['dc-editable-list-grid-checkcolumn']"
+                                      [width]="65"
+                                      [minResizableWidth]="65"
+                                      [lockable]="false"
+                                      [locked]="true"
+                                      [reorderable]="false"
+                                      [resizable]="false"
+                                      [showSelectAll]="true">
+            <ng-template kendoGridHeaderTemplate
+                         let-dataItem
+                         let-rowIndex="rowIndex">
+              <div>
+                <input kendoGridSelectAllCheckbox
+                       class="k-checkbox"
+                       type="checkbox"
+                       id="chkAll" />
+                <label class="k-checkbox-label"
+                       for="chkAll"></label>
+              </div>
+            </ng-template>
+            <ng-template kendoGridCellTemplate
+                         let-dataItem
+                         let-rowIndex="rowIndex">
+              <div [ngClass]="{ 'k-state-disabled': $isInEditingMode | async }">
+                <span>
+                  <small>{{rowIndex+1}} </small>
+                </span>
+                <input [kendoGridSelectionCheckbox]="rowIndex"
+                       class="k-checkbox"
+                       type="checkbox"
+                       id="{{'chk-'+ rowIndex}}" />
+                <label class="k-checkbox-label"
+                       for="{{'chk-'+ rowIndex}}"></label>
+              </div>
+            </ng-template>
+          </kendo-grid-checkbox-column>
+
+          <!-- Grid Command Column Properties -->
+          <kendo-grid-column *ngFor="let col of columns;trackBy: trackColsByFn"
+                             [field]="col.field"
+                             [title]="col.header"
+                             [editable]="col.editable"
+                             [editor]="columnEditor(col.fieldType)"
+                             [filterable]="false"
+                             [groupable]="false"
+                             [sortable]="col.sortable"
+                             [width]="150">
+
+            <!-- Grid Header Template Logic -->
+            <ng-template kendoGridHeaderTemplate
+                         let-column
+                         let-columnIndex="columnIndex">
+              <strong>{{column.title}}</strong>
+            </ng-template>
+
+            <!-- Grid Cell View Template Logic -->
+            <ng-template kendoGridCellTemplate
+                         let-dataItem
+                         let-column="column"
+                         let-columnIndex="columnIndex"
+                         let-rowIndex="rowIndex">
+              <div>
+                <ng-container [ngSwitch]="true">
+
+                  <ng-container *ngSwitchDefault>
+                    <span
+                          [matTooltip]="column.field">{{dataItem[column.field]}}</span>
+                  </ng-container>
+                </ng-container>
+              </div>
+            </ng-template>
+
+          </kendo-grid-column>
+
+        </ng-container>
+
+      </kendo-grid>

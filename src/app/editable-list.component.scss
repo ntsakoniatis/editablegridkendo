@@ -1,0 +1,31 @@
+  .k-grid {
+    flex: 1 1 auto;
+    min-width: 0;
+
+    ::ng-deep tr td.dc-editable-list-grid-commandcolumn,
+    ::ng-deep tr td.dc-editable-list-grid-checkcolumn,
+    ::ng-deep tr th.dc-editable-list-grid-checkcolumn {
+      padding-left: 0.2rem;
+      padding-right: 0.4rem;
+      text-align: end;
+    }
+
+    ::ng-deep tr th.dc-editable-list-grid-commandcolumn,
+    ::ng-deep tr td.dc-editable-list-grid-commandcolumn {
+      border-left-width: 1px;
+
+      mat-icon {
+        vertical-align: middle;
+      }
+
+      mat-icon.dc-editable-list-mat-icon-action svg {
+        color: var(--dclist-header-row-background-color, #AAA);
+      }
+
+      button {
+        padding: unset;
+        vertical-align: middle;
+      }
+    }
+
+  }

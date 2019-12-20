@@ -52,11 +52,15 @@
  */
 // import 'web-animations-js';  // Run `npm install --save web-animations-js`.
 
+if (!Element.prototype.matches) {
+    Element.prototype.matches = (<any> Element).prototype.msMatchesSelector;
+}
 
 
 /***************************************************************************************************
  * Zone JS is required by Angular itself.
  */
+import 'hammerjs';
 import 'zone.js/dist/zone';  // Included with Angular CLI.
 
 
